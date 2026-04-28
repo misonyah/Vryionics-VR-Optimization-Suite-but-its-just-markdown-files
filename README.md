@@ -3,9 +3,9 @@
 > Diagnose, explain, and fix VR performance bottlenecks on Windows.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078d4)](https://github.com/TheGamingLemon256/Vryionics-VR-Optimization-Suite/releases)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078d4)](https://github.com/Vryionics/Vryionics-VR-Optimization-Suite/releases)
 [![Built with: Electron + React + TypeScript](https://img.shields.io/badge/built%20with-Electron%20%2B%20React%20%2B%20TypeScript-9b7aff)](#built-with)
-[![Latest Release](https://img.shields.io/github/v/release/TheGamingLemon256/Vryionics-VR-Optimization-Suite)](https://github.com/TheGamingLemon256/Vryionics-VR-Optimization-Suite/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/Vryionics/Vryionics-VR-Optimization-Suite)](https://github.com/Vryionics/Vryionics-VR-Optimization-Suite/releases/latest)
 
 Vryionics VR Optimization Suite (VROS) scans your Windows PC for the configuration issues that hurt VR performance, explains every finding in both plain English and technical detail, and offers reversible one-click fixes. It's built specifically for VR — every rule and recommendation is informed by VR-specific bottleneck patterns (CPU-bound social VR, GPU-bound flight sims, wireless streaming jitter, etc.) rather than generic "system optimizer" snake-oil.
 
@@ -24,7 +24,7 @@ Vryionics VR Optimization Suite (VROS) scans your Windows PC for the configurati
 
 ## Installing
 
-Download the latest installer from the [Releases](https://github.com/TheGamingLemon256/Vryionics-VR-Optimization-Suite/releases/latest) page.
+Download the latest installer from the [Releases](https://github.com/Vryionics/Vryionics-VR-Optimization-Suite/releases/latest) page.
 
 The installer is **unsigned** (we're a small open-source project; code-signing certificates cost real money). Windows SmartScreen will show a warning the first time you run it — click "More info" → "Run anyway." You can verify the installer's SHA-256 against the value posted in the release notes if you want to confirm authenticity.
 
@@ -45,14 +45,14 @@ VROS runs entirely locally. **No telemetry, no analytics, no automatic data tran
 
 - Fetching the latest GitHub release for the auto-updater (every 2 minutes)
 - Querying NVIDIA / AMD / Intel public driver pages (every 24 hours)
-- Sending bug reports — but **only when you explicitly click "Send" in Settings → Bug Report**, and only the data you've explicitly checked in the report-builder UI
+- Opening a pre-filled GitHub Issue when you click "Open Issue on GitHub" in Settings → Bug Report — the report goes through GitHub Issues using your own GitHub account; no third-party endpoints involved
 
 Full data inventory in [PRIVACY.md](PRIVACY.md).
 
 ## Building from source
 
 ```bash
-git clone https://github.com/TheGamingLemon256/Vryionics-VR-Optimization-Suite.git
+git clone https://github.com/Vryionics/Vryionics-VR-Optimization-Suite.git
 cd Vryionics-VR-Optimization-Suite
 npm install
 npm run dev          # development build with hot reload
