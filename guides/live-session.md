@@ -71,8 +71,8 @@ These are background apps that consume CPU, RAM, or disk I/O without helping VR.
 
 These must be running for VR to work correctly. Do not close them.
 
-**VR runtimes:** `vrserver.exe`, `vrcompositor.exe`, `vrmonitor.exe`, `ovrserver_x64.exe`, `virtualdesktop.streamer.exe`, `alvr_server.exe`  
-**VR companions:** `xsoverlay.exe`, `fpsvr.exe`, `vrcx.exe`, `magicchatbox.exe`, `vrcosc.exe`, `openkneeboardapp.exe`  
+**VR runtimes/platforms:** `vrserver.exe`, `vrcompositor.exe`, `vrmonitor.exe`, `ovrserver_x64.exe`, `virtualdesktop.streamer.exe`, `alvr_server.exe`, `resonite.exe`  
+**VR companions:** `xsoverlay.exe`, `fpsvr.exe`, `vrcx.exe`, `magicchatbox.exe`, `vrcosc.exe`, `openkneeboardapp.exe`, `advancedsettings.exe` (OVR Advanced Settings), `ovrtoolkit.exe` + `ovrtoolkit-task.exe` (OVR Toolkit), `oyasumivr.exe` + `oyasumivr-elevated-sidecar.exe` (OyasumiVR)  
 **Tracking:** `slimevr.exe`, `amethyst.exe`, `driver4vr.exe`, `opentrack.exe`  
 **Face/eye tracking:** `vrcfacetracking.exe`, `sr_runtime.exe` (SRanipal / Vive Facial Tracker), `baballonia.exe` — these run a capture→inference→OSC loop that needs to stay real-time; deprioritizing them shows up as your avatar's expression lagging behind your real one
 **Audio:** `voicemeeter.exe`, `voicemod.exe`, `eartrumpet.exe`  
@@ -107,7 +107,7 @@ Lower background apps to BelowNormal priority so they can't compete with VR for 
 
 ```powershell
 $ErrorActionPreference = 'SilentlyContinue'
-$protect = @('vrserver','vrcompositor','vrchat','ovrserver_x64','steam','discord','obs64','explorer','dwm','audiodg','vrcfacetracking','sr_runtime','baballonia')
+$protect = @('vrserver','vrcompositor','vrchat','ovrserver_x64','steam','discord','obs64','explorer','dwm','audiodg','vrcfacetracking','sr_runtime','baballonia','resonite','advancedsettings','ovrtoolkit','ovrtoolkit-task','oyasumivr','oyasumivr-elevated-sidecar')
 
 Get-Process | Where-Object {
   $lower = $_.ProcessName.ToLower()
@@ -231,7 +231,7 @@ public class EcoQoS {
 }
 "@
 
-$protect = @('vrserver','vrcompositor','vrchat','ovrserver_x64','steam','discord','obs64','explorer','dwm','audiodg','vrcfacetracking','sr_runtime','baballonia')
+$protect = @('vrserver','vrcompositor','vrchat','ovrserver_x64','steam','discord','obs64','explorer','dwm','audiodg','vrcfacetracking','sr_runtime','baballonia','resonite','advancedsettings','ovrtoolkit','ovrtoolkit-task','oyasumivr','oyasumivr-elevated-sidecar')
 
 Get-Process | Where-Object { -not ($protect -contains $_.ProcessName.ToLower()) } | ForEach-Object {
   try {
