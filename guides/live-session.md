@@ -252,7 +252,7 @@ Write-Host "EcoQoS applied to background processes."
 
 Quick reference before putting on the headset:
 
-- [ ] Power plan set to High Performance
+- [ ] Power plan set to High Performance (AMD X3D CPUs: use Balanced instead — see [CPU guide](cpu.md#power-plan))
 - [ ] Close cloud sync apps (OneDrive, Google Drive, Dropbox)
 - [ ] Close game launchers not needed (Epic, EA, Blizzard)
 - [ ] Close browser tabs / browser if possible

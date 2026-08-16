@@ -122,6 +122,7 @@ Create or edit this file. Recommended settings for VR performance:
 **`avatar_culling_enabled` + `avatar_culling_distance`**  
 - Stops rendering avatars beyond 25 meters
 - In busy worlds with 20+ players, uncullled far avatars account for 15–30% of total GPU time
+- **This is a GPU-rendering fix only.** Culling does not unload a culled avatar's PhysBones — the CPU keeps simulating physics for every loaded avatar regardless of whether it's currently drawn. If your bottleneck is CPU (one core pegged, GPU usage low), culling distance won't help; `dynamic_bone_max_affected_transform_count` above is the actual lever for that.
 
 **`cache_size`** (in MB, so 20480 = 20GB)  
 - Default is ~10GB; VRChat purges frequently-visited avatars/worlds when it fills
@@ -190,3 +191,9 @@ Best practices:
 - Requires USB 3.0 (≥5 Gbps) + DisplayPort 1.4
 - Eye-tracked foveated rendering does NOT work on PC (PS5-exclusive feature)
 - Compatible with SteamVR via OpenXR
+
+### Steam Frame
+Valve's standalone SteamOS VR headset (Snapdragon 8 Gen 3, dual 2160×2160 panels), released summer 2026. For PCVR streaming it ships with a dedicated 6GHz Wi-Fi 6E USB dongle that connects point-to-point to the headset instead of going through your home router or main Wi-Fi adapter — the same idea as Virtual Desktop's dongle mode, but bundled and first-party.
+- Plug the dongle into a PC USB port near your headset's play area, not into a hub
+- Because it bypasses your router entirely, home network congestion (other devices, 2.4GHz interference) doesn't affect this link — the usual [Wi-Fi band and channel-congestion advice](network-wifi.md) doesn't apply to it
+- Still benefits from the general wired-PC / low-latency practices elsewhere in this guide (GPU encoder headroom, render resolution matched to link capacity)

@@ -123,6 +123,12 @@ See [Windows Settings → Nagle Algorithm](windows-settings.md#tcp-nagle-algorit
 
 ---
 
+## Wi-Fi 7 (MLO)
+
+Wi-Fi 7's headline VR-relevant feature is Multi-Link Operation (MLO) — the adapter and router hold simultaneous connections across bands (e.g. 5GHz + 6GHz) and shift traffic between them in real time instead of committing to one band and eating the disconnect/reconnect cost when it degrades. This mainly helps latency *consistency* (fewer spikes from momentary band congestion), not throughput headroom — at typical VR streaming bitrates (150–300 Mbps) Wi-Fi 6E already has plenty of margin, so Wi-Fi 7 is worth it for a rock-solid link rather than for bandwidth you don't need. Needs a Wi-Fi 7 headset adapter, Wi-Fi 7 router, and streaming software that takes advantage of it — check current support before buying hardware for this specifically.
+
+---
+
 ## Wi-Fi 6E upgrade opportunity
 
 If you're on 5GHz and using Quest 3 or Quest Pro, a Wi-Fi 6E router (6GHz band) is the single biggest wireless VR upgrade available. The 6GHz band currently has no competing devices in most homes, providing dedicated spectrum with consistent throughput.

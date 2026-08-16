@@ -2,7 +2,7 @@
 
 ## Power Plan
 
-Always use **High Performance** or **Ultimate Performance** for VR. Balanced and Power Saver plans allow P-state frequency scaling that adds 1–10ms latency per transition.
+**Intel and non-X3D AMD CPUs:** use **High Performance** or **Ultimate Performance** for VR. Balanced and Power Saver plans allow P-state frequency scaling that adds 1–10ms latency per transition.
 
 ```
 ; Apply High Performance
@@ -13,7 +13,15 @@ powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
 powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61
 ```
 
-**AMD Ryzen:** Use "AMD Ryzen Balanced" instead of generic High Performance — it correctly synchronizes the Infinity Fabric clock.
+### AMD X3D CPUs: use "AMD Ryzen Balanced" instead — High Performance actively hurts you here
+
+This is the opposite of the advice above, and it's specific to X3D parts on a modern Windows 11 kernel. "AMD Ryzen Balanced" (installed with the AMD chipset driver) hands clock and core-routing decisions to CPPC — which on X3D chips is what steers threads onto the V-Cache CCD in the first place. High Performance locks the CPU near its non-boost ceiling as a floor: it runs hotter, eats into boost headroom, and overrides the CPPC hints doing that CCD routing. VRChat's own AMD X3D wiki guide documents this, and it matches independent reports from dual-CCD X3D owners (7900X3D/7950X3D/9950X3D) tracing bad frame times back to the power plan.
+
+**The catch:** SteamVR's Lighthouse startup sequence force-switches Windows to High Performance the moment it launches, silently undoing this. Two ways around it:
+- Delete every other power plan so there's nothing for SteamVR to switch *to*: `powercfg /list` to find the GUIDs, then `powercfg /delete <GUID>` for each one except AMD Ryzen Balanced.
+- Or manually switch back to Balanced after SteamVR finishes launching, every session.
+
+Applies to 5800X3D, 7800X3D, 9800X3D, 7900X3D, 7950X3D, 9950X3D and later X3D parts. This doesn't change the affinity-mask guidance below — the power plan and the Steam launch option address different parts of the same CCD-routing problem, and are worth doing together.
 
 ---
 

@@ -52,9 +52,19 @@ powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
 powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61
 ```
 
-**AMD users:** "AMD Ryzen Balanced" is preferable to generic High Performance — it understands Infinity Fabric frequency properly.
-
 **Why:** Non-HP plans allow P-state transitions that add 1–10ms CPU latency at every frequency change.
+
+**AMD X3D CPUs are the exception — use "AMD Ryzen Balanced" instead, not High Performance.** On X3D chips, High Performance overrides the CPPC hints that route threads onto the V-Cache CCD, running hotter for worse VR frame times. SteamVR also force-switches you to High Performance on launch, so you need to either delete your other power plans or switch back manually every session. See [CPU → Power Plan](cpu.md#power-plan) for the full explanation. This does not apply to Intel or non-X3D AMD CPUs.
+
+---
+
+## Windows 11 25H2 — known FPS regression
+
+If you updated to 25H2 (2025 Update) and VR/game FPS dropped noticeably afterward (drops of tens of FPS have been widely reported, both NVIDIA and AMD), you're hitting a documented regression, not a config problem on your end. Fix:
+1. Install `KB5095093` (or later cumulative update) — Microsoft's fix for the 25H2 performance regression.
+2. Update your GPU driver — NVIDIA shipped emergency drivers (596.xx+) specifically addressing 25H2/24H2 conflicts; AMD has equivalent updates.
+
+Check your build with `winver`. Don't chase registry tweaks for a stutter/FPS-drop that's actually this.
 
 ---
 

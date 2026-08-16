@@ -15,6 +15,16 @@ HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers
 
 Reboot required.
 
+**Caveat on ≤8GB VRAM cards:** HAGS reserves up to ~1GB of VRAM for its on-GPU command queues. If you're already near your VRAM ceiling (see [VRAM](#vram) below), HAGS can cause more stuttering than it prevents — worth A/B testing off if you're on an 8GB or smaller card and seeing VRAM-pressure symptoms.
+
+---
+
+## DLSS / FSR Frame Generation — not usable in VR
+
+Frame generation (DLSS 3/4 Frame Generation, FSR 3/4 Frame Generation) interpolates extra frames between rendered ones for flat-screen games. It doesn't apply to VR: frame-gen presents through a DXGI swapchain to a desktop window, while VR headsets are driven through a separate compositor/runtime path that frame-gen doesn't hook into. Even where a game exposes the toggle in VR mode, don't expect it to do anything — and if it did work, the added latency (frame-gen trades higher apparent framerate for input lag) is the opposite of what VR needs, since motion-to-photon latency is what causes discomfort, not raw FPS. Use SteamVR's Motion Smoothing / async reprojection instead — see [VR Software → Async Reprojection](vr-software.md#async-reprojection-atw) — that's the VR-native equivalent and it does work.
+
+Plain DLSS/FSR **upscaling** (not frame generation) still applies normally in VR and is worth using — it's a separate feature from frame generation.
+
 ---
 
 ## Resizable BAR (NVIDIA) / Smart Access Memory (AMD)
