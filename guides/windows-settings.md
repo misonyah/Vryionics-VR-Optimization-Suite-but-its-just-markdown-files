@@ -4,11 +4,12 @@
 
 MMCSS (Multimedia Class Scheduler Service) controls how Windows allocates CPU time to real-time tasks like VR and audio.
 
-### SystemResponsiveness → 0
+### SystemResponsiveness → 0 (disputed — likely no effect)
 
 **What:** Reserves 0% CPU for background tasks. Default is 20%.  
-**Why:** At 20%, MMCSS withholds 20% of CPU time from VR even when nothing else needs it.  
-**Registry:**
+**Why it's on this list:** The classic advice is that at 20%, MMCSS withholds CPU time from VR even when nothing else needs it.  
+**Why it's disputed:** On modern Windows builds the value gets normalized internally regardless of what you set — multiple independent testers have measured no change with this applied. Treat it as a legacy myth fix, not a real optimization.  
+**Registry (if you want to try it anyway):**
 ```
 HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile
   SystemResponsiveness = 0 (DWORD)
@@ -166,17 +167,9 @@ HKLM\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization
 
 ---
 
-## Windows Defender — VR folder exclusions
+## Windows Defender — VR folder exclusions (not recommended)
 
-Real-time scanning causes 2–50ms hitches when VRChat loads avatar bundles.
-
-**PowerShell (run as Admin):**
-```powershell
-Add-MpPreference -ExclusionPath "C:\Program Files (x86)\Steam\steamapps"
-Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\..\LocalLow\VRChat\VRChat"
-```
-
-**Security tradeoff:** Only exclude folders you trust. Don't add your entire C: drive.
+Real-time scanning does cause 2–50ms hitches when VRChat loads avatar bundles, but excluding your Steam library or VRChat cache from Defender creates a predictable, world-writable "safe haven" directory — anything that lands in an excluded folder (including a malicious avatar asset or a dropped payload) runs unscanned. That's a standing security hole for a few milliseconds of load-time smoothness, and there's no way to write this up responsibly as a "quick fix." If you still want to do it after weighing that tradeoff, the mechanism is `Add-MpPreference -ExclusionPath`, but scope it as narrowly as possible and never exclude a whole drive.
 
 ---
 
@@ -184,16 +177,12 @@ Add-MpPreference -ExclusionPath "$env:LOCALAPPDATA\..\LocalLow\VRChat\VRChat"
 
 Sets VR processes to launch at High priority before they even start executing. More reliable than post-launch priority tools.
 
+**Don't include `vrserver.exe` or `vrcompositor.exe` here.** Raising the compositor's own priority above the workload it's compositing is a priority-inversion antipattern — it doesn't help, and can make frame delivery worse. Boost the game/client processes only.
+
 **Registry (one key per exe):**
 ```
-HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\vrserver.exe\PerfOptions
-  CpuPriorityClass = 3  (DWORD)   ; 3 = High
-
-HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\vrcompositor.exe\PerfOptions
-  CpuPriorityClass = 3  (DWORD)
-
 HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\VRChat.exe\PerfOptions
-  CpuPriorityClass = 3  (DWORD)
+  CpuPriorityClass = 3  (DWORD)   ; 3 = High
 
 HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\OVRServer_x64.exe\PerfOptions
   CpuPriorityClass = 3  (DWORD)

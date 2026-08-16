@@ -85,9 +85,11 @@ These must be running for VR to work correctly. Do not close them.
 
 Boost VR processes to High CPU priority after launching SteamVR:
 
+**Don't include `vrserver` or `vrcompositor`.** Raising the compositor's own priority above the workload it composites is a priority-inversion antipattern — it doesn't help and can make frame delivery worse. Boost the game/client processes only.
+
 ```powershell
 $ErrorActionPreference = 'SilentlyContinue'
-foreach ($name in @('vrserver','vrcompositor','vrdashboard','vrchat','ovrserver_x64')) {
+foreach ($name in @('vrdashboard','vrchat','ovrserver_x64')) {
   Get-Process -Name $name | ForEach-Object {
     $_.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::High
   }
@@ -154,9 +156,9 @@ Kill this process when done with VR to release the lock.
 
 ---
 
-## Standby List Flush
+## Standby List Flush (long sessions only — skip this for a normal play session)
 
-The Windows standby list is cached memory from recently-closed apps. It's normally beneficial but can compete with VR working sets and cause sudden multi-frame stutters. Flush it before or during VR sessions.
+The Windows standby list is cached memory from recently-closed apps. It's normally beneficial, and flushing it is net-negative for a typical session — you'll cause cache misses and disk thrashing for browser/Discord/Steam the moment you tab back out, in exchange for headroom you probably didn't need. It's only worth considering for long VR sessions (multi-hour) where standby-list growth is genuinely competing with VR working sets. `NtSetSystemInformation` is also one of the more malware-shaped low-level API calls you can make, so know what you're running before you run it.
 
 **Requires:** Admin rights + SeProfileSingleProcessPrivilege (admin has this by default)
 
@@ -255,7 +257,7 @@ Quick reference before putting on the headset:
 - [ ] Close game launchers not needed (Epic, EA, Blizzard)
 - [ ] Close browser tabs / browser if possible
 - [ ] Disable Xbox Game Bar recording if not using it
-- [ ] Set VR process priorities to High (or rely on IFEO tweak)
-- [ ] Flush standby list (RAMMap → Empty → Empty Standby List)
+- [ ] Set VR process priorities to High (or rely on IFEO tweak) — game/client processes only, not vrserver/vrcompositor
 - [ ] For wireless: confirm Wi-Fi on 5GHz or 6GHz, power saving disabled
+- [ ] Long session (multi-hour) only: consider a standby list flush
 - [ ] Check GPU/CPU temps are normal before long session

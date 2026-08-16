@@ -103,15 +103,29 @@ Launch BIOSes had VR performance regressions — Thread Director mis-routed work
 
 ## AMD Ryzen 3D V-Cache
 
-If you have a 5800X3D, 7800X3D, 9800X3D, or any X3D variant, VRChat and VR apps should be pinned to the V-Cache CCD for best performance.
+If you have an X3D chip, VRChat and VR apps benefit from being pinned to the V-Cache CCD — but the correct launch option depends on whether your chip has one CCD or two. Shipping the wrong mask doesn't just fail to help, it can silently pin the game to the *non*-V-Cache CCD, which is worse than doing nothing.
 
-### Steam launch option (most reliable)
+### Single-CCD X3D parts (5800X3D, 7800X3D, 9800X3D)
+
+The whole chip is the V-Cache CCD, so pinning is unambiguous.
+
 Right-click VRChat in Steam → Properties → General → Launch Options:
 ```
-cmd /c start /affinity FFFF /high "" %command%
+cmd /c start /affinity FF /high "" %command%
 ```
 
-This pins to the first 16 logical processors (V-Cache CCD on these chips) and sets High priority at spawn.
+`FF` covers this chip's 8 physical cores. (Older guides — including earlier versions of this one — used `FFFF`, which over-pins to 16 logical processors and isn't the correct mask for these 8-core parts.)
+
+### Dual-CCD X3D parts (7900X3D, 7950X3D, 9950X3D) — do NOT hardcode an affinity mask
+
+On these chips only one CCD has the extra V-Cache, and **which logical processor range that CCD occupies varies by motherboard BIOS** — there's no single mask that's correct across boards. A hardcoded mask here is a coin flip: get it wrong and you've pinned VR to the *slower* CCD while believing you optimized it.
+
+Use priority only, no affinity:
+```
+cmd /c start /high "" %command%
+```
+
+If you want to actually pin to the correct CCD, verify which logical processors carry the V-Cache on your specific board first (Task Manager → Details → right-click process → Set affinity, cross-referenced with a tool that reports per-CCD cache size like HWiNFO64), then set that as a custom affinity mask — don't copy a mask from a guide written for a different board's BIOS.
 
 ### AMD 3D V-Cache driver (amd3dvcacheSvc)
 If installed, you can register apps in the registry:
